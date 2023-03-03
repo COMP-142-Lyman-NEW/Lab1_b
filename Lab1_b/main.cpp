@@ -1,8 +1,12 @@
-//
-//  Lab1.cpp : This file contains a small drawing program
-//
-//  Created by Angela Lyman on 17/02/2023.
-//
+/** \file main.cpp
+* \brief A small drawing program.
+* \details  The program takes user inputs or generates random values to make a horizontal line, vertical line, rectangle, square, triangle,
+* or assortment of shapes.
+* \author Angela Lyman
+* \version 0.1
+* \date March 3, 2023
+* \copyright N/A
+*/
 
 #include <iostream>
 #include <cstdlib>
@@ -24,7 +28,11 @@ const int MIN_SHAPE_HEIGHT = 2;
 const int MAX_SHAPE_LENGTH = 20;
 const int MAX_SHAPE_HEIGHT = 20;
 
-// The driver
+/**
+* Function <code>main</code> presents the menu and calls the requested functionality.
+*<BR>
+* @return Function returns <code>0</code>.
+*/
 int main() {
     
     int choice;
@@ -141,7 +149,12 @@ int main() {
     return 0;
 }
 
-// Creates a horizontal line with a length and symbol that the user gives
+/**
+* Function <code>horizontalLine</code> Creates a horizontal line with a length and symbol that the user gives
+* <BR>
+* @param length The length of the line (>= 1)
+* @param symbol The symbols used to print the line, must be a printable ASCII character [33 - 126].
+*/
 void horizontalLine(int length, char symbol) {
     
     for (int i = 0; i < length; i++) {
@@ -150,7 +163,12 @@ void horizontalLine(int length, char symbol) {
     cout << endl;
 }
 
-// Creates a vertical line with a height and symbol that the user gives
+/**
+* Function <code>verticalLine</code> Creates a vertical line with a height and symbol that the user gives
+* <BR>
+* @param height The height of the line (>= 1)
+* @param symbol The symbols used to print the line, must be a printable ASCII character [33 - 126].
+*/
 void verticalLine(int height, char symbol) {
     
     for (int i = 0; i < height; i++) {
@@ -158,7 +176,13 @@ void verticalLine(int height, char symbol) {
     }
 }
 
-// Creates an unfilled rectangle with a length and height that the user gives, which must be greater than 2
+/**
+* Function <code>rectangle</code> Creates an unfilled rectangle with a length, height, and symbol that the user gives.
+* <BR>
+* @param length The length of the rectangle (>= 2)
+* @param height The height of the rectangle (>= 2)
+* @param symbol The symbols used to print the line, must be a printable ASCII character [33 - 126].
+*/
 void rectangle(int length, int height, char symbol) {
     
     // creates the first line of the rectangle, which is a solid line
@@ -178,12 +202,21 @@ void rectangle(int length, int height, char symbol) {
     
 }
 
-// Creates an unfilled square using the rectangle function, where both length and height are the same
+/**
+* Function <code>square</code> Creates an unfilled square using the rectangle function, where both length and height are the same
+* <BR>
+* @param length The length of the square (>= 2)
+* @param symbol The symbols used to print the line, must be a printable ASCII character [33 - 126].
+*/
 void square(int length, char symbol) {
     rectangle(length, length, symbol);
 }
 
-// Creates an unfilled triangle with a height and symbol that the user gives.
+/**
+* Function <code>square</code> Creates an unfilled triangle with a user-inputted height and symbol.
+* @param height The number of rows of the triangle (>= 2)
+* @param symbol The symbols used to print the line, must be a printable ASCII character [33 - 126].
+*/
 void triangle(int height, char symbol) {
     
     // creates each row of the triangle except the last one
@@ -205,7 +238,9 @@ void triangle(int height, char symbol) {
     }
 }
 
-// Draws a random assortment of shapes with random lengths, heights, and symbols
+/**
+* Function <code>drawShapes</code> draws a random assortment of shapes with random lengths, heights, and symbols.
+*/
 void drawShapes() {
     
     // seeds the random numbers to time, making them truly random
