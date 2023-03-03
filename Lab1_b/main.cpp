@@ -4,13 +4,13 @@
 * or assortment of shapes.
 * \author Angela Lyman
 * \version 0.1
-* \date March 3, 2023
-* \copyright N/A
+* \date 03/03/2023
 */
 
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <cassert>
 using namespace std;
 
 // Function prototypes
@@ -31,7 +31,7 @@ const int MAX_SHAPE_HEIGHT = 20;
 /**
 * Function <code>main</code> presents the menu and calls the requested functionality.
 *<BR>
-* @return Function returns <code>0</code>.
+* @return Returns <code>0</code>.
 */
 int main() {
     
@@ -47,7 +47,7 @@ int main() {
         cout << "3) Draw a square" << endl;
         cout << "4) Draw a rectangle" << endl;
         cout << "5) Draw a triangle" << endl;
-        cout << "6) Draw 10 random shapes" << endl;
+        cout << "6) Draw " << MAX_SHAPES << " random shapes" << endl;
         cout << "7) Quit" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
@@ -155,7 +155,9 @@ int main() {
 * @param length The length of the line (>= 1)
 * @param symbol The symbols used to print the line, must be a printable ASCII character [33 - 126].
 */
-void horizontalLine(int length, char symbol) {
+void horizontalLine(const int length, const char symbol) {
+    assert(length > 0);
+    assert(symbol > 32 && symbol < 127); // only printable characters
     
     for (int i = 0; i < length; i++) {
         cout << symbol;
@@ -169,7 +171,9 @@ void horizontalLine(int length, char symbol) {
 * @param height The height of the line (>= 1)
 * @param symbol The symbols used to print the line, must be a printable ASCII character [33 - 126].
 */
-void verticalLine(int height, char symbol) {
+void verticalLine(const int height, const char symbol) {
+    assert(height > 0);
+    assert(symbol > 32 && symbol < 127);
     
     for (int i = 0; i < height; i++) {
         cout << symbol << endl;
@@ -183,7 +187,10 @@ void verticalLine(int height, char symbol) {
 * @param height The height of the rectangle (>= 2)
 * @param symbol The symbols used to print the line, must be a printable ASCII character [33 - 126].
 */
-void rectangle(int length, int height, char symbol) {
+void rectangle(const int length, const int height, const char symbol) {
+    assert(length > 0);
+    assert(height > 0);
+    assert(symbol > 32 && symbol < 127);
     
     // creates the first line of the rectangle, which is a solid line
     horizontalLine(length, symbol);
@@ -208,7 +215,7 @@ void rectangle(int length, int height, char symbol) {
 * @param length The length of the square (>= 2)
 * @param symbol The symbols used to print the line, must be a printable ASCII character [33 - 126].
 */
-void square(int length, char symbol) {
+void square(const int length, const char symbol) {
     rectangle(length, length, symbol);
 }
 
@@ -217,7 +224,9 @@ void square(int length, char symbol) {
 * @param height The number of rows of the triangle (>= 2)
 * @param symbol The symbols used to print the line, must be a printable ASCII character [33 - 126].
 */
-void triangle(int height, char symbol) {
+void triangle(const int height, const char symbol) {
+    assert(height > 0);
+    assert(symbol > 32 && symbol < 127);
     
     // creates each row of the triangle except the last one
     for (int i = 1; i <= height; i++) {
@@ -243,7 +252,6 @@ void triangle(int height, char symbol) {
 */
 void drawShapes() {
     
-    // seeds the random numbers to time, making them truly random
     srand(time(NULL));
     
     // creates the correct amount of shapes
@@ -283,6 +291,9 @@ void drawShapes() {
         }
         else if (shape == 5) {
             triangle(height, symbol);
+        }
+        else {
+            assert(false); // should not be possible
         }
         
     }
