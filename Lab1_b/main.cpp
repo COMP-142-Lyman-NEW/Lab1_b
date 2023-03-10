@@ -14,19 +14,21 @@
 using namespace std;
 
 // Function prototypes
-void horizontalLine(int, char);
-void verticalLine(int, char);
-void square(int, char);
-void rectangle(int, int, char);
-void triangle(int, char);
+void horizontalLine(const int, const char);
+void verticalLine(const int, const char);
+void square(const int, const char);
+void rectangle(const int, const int, const char);
+void triangle(const int, const char);
 void drawShapes();
+void initializeArrays(int[], int[], char[], const int);
+void drawShapesWithArrays(const int[], const int[], const char[], const int);
 
 // Declaring constants
 const int MAX_SHAPES = 10;
-const int MIN_SHAPE_LENGTH = 2;
-const int MIN_SHAPE_HEIGHT = 2;
-const int MAX_SHAPE_LENGTH = 20;
-const int MAX_SHAPE_HEIGHT = 20;
+const int MIN_SHAPE_LENGTH = 1;
+const int MIN_SHAPE_HEIGHT = 1;
+const int MAX_SHAPE_LENGTH_RANGE = 20;
+const int MAX_SHAPE_HEIGHT_RANGE = 20;
 
 /**
 * Function <code>main</code> presents the menu and calls the requested functionality.
@@ -35,10 +37,15 @@ const int MAX_SHAPE_HEIGHT = 20;
 */
 int main() {
     
-    int choice;
-    int length;
-    int height;
+    const int MAX_ARRAY = 10;
+    
+    int choice, length, height;
     char symbol;
+    
+    int shapeType[MAX_ARRAY], shapeLength[MAX_ARRAY];
+    char shapeChar[MAX_ARRAY];
+    
+    srand(static_cast<unsigned int>(time(NULL)));
     
     do {
         // The Options Menu
@@ -48,7 +55,8 @@ int main() {
         cout << "4) Draw a rectangle" << endl;
         cout << "5) Draw a triangle" << endl;
         cout << "6) Draw " << MAX_SHAPES << " random shapes" << endl;
-        cout << "7) Quit" << endl;
+        cout << "7) Draw random shapes using arrays" << endl;
+        cout << "8) Quit" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
         
@@ -83,9 +91,9 @@ int main() {
                 
             case 3:
                 do {
-                    cout << "Enter the length of the square (must be greater than 1): ";
+                    cout << "Enter the length of the square (must be greater than 0): ";
                     cin >> length;
-                } while (length < 2);
+                } while (length < 1);
                 
                 cout << "Enter the symbol you want: ";
                 cin >> symbol;
@@ -97,14 +105,14 @@ int main() {
                 
             case 4:
                 do {
-                    cout << "Enter the length of the rectangle (must be greater than 1): ";
+                    cout << "Enter the length of the rectangle (must be greater than 0): ";
                     cin >> length;
-                } while (length < 2);
+                } while (length < 1);
                 
                 do {
-                    cout << "Enter the height of the rectangle (must be greater than 1): ";
+                    cout << "Enter the height of the rectangle (must be greater than 0): ";
                     cin >> height;
-                } while (height < 2);
+                } while (height < 1);
                 
                 cout << "Enter the symbol you want: ";
                 cin >> symbol;
@@ -116,9 +124,9 @@ int main() {
                 
             case 5:
                 do {
-                    cout << "Enter the height of the triangle (must be greater than 1): ";
+                    cout << "Enter the height of the triangle (must be greater than 0): ";
                     cin >> height;
-                } while (height < 2);
+                } while (height < 1);
                 
                 cout << "Enter the symbol you want: ";
                 cin >> symbol;
@@ -135,14 +143,22 @@ int main() {
                 break;
                 
             case 7:
+                initializeArrays(shapeType, shapeLength, shapeChar, MAX_ARRAY);
+                drawShapesWithArrays(shapeType, shapeLength, shapeChar, MAX_ARRAY);
+                cout << endl;
+                
+                break;
+                
+            case 8:
+                
                 break; // no code needed here
                 
             default:
-                cout << "Invalid input." << endl;
+                cerr << "Invalid input." << endl << endl;
                 
                 break;
         }
-    } while (choice != 7);
+    } while (choice != 8);
     
     cout << "Goodbye!" << endl;
     
@@ -183,8 +199,8 @@ void verticalLine(const int height, const char symbol) {
 /**
 * Function <code>rectangle</code> Creates an unfilled rectangle with a length, height, and symbol that the user gives.
 * <BR>
-* @param length The length of the rectangle (>= 2)
-* @param height The height of the rectangle (>= 2)
+* @param length The length of the rectangle (>= 1)
+* @param height The height of the rectangle (>= 1)
 * @param symbol The symbols used to print the line, must be a printable ASCII character [33 - 126].
 */
 void rectangle(const int length, const int height, const char symbol) {
@@ -204,15 +220,17 @@ void rectangle(const int length, const int height, const char symbol) {
         cout << symbol << endl;
     }
     
-    // creates the last line of the rectangle, which is a solid line
-    horizontalLine(length, symbol);
+    // if the height is sufficient (>1), creates the last line of the rectangle, which is a solid line
+    if (height > 1) {
+        horizontalLine(length, symbol);
+    }
     
 }
 
 /**
 * Function <code>square</code> Creates an unfilled square using the rectangle function, where both length and height are the same
 * <BR>
-* @param length The length of the square (>= 2)
+* @param length The length of the square (>= 1)
 * @param symbol The symbols used to print the line, must be a printable ASCII character [33 - 126].
 */
 void square(const int length, const char symbol) {
@@ -221,7 +239,8 @@ void square(const int length, const char symbol) {
 
 /**
 * Function <code>square</code> Creates an unfilled triangle with a user-inputted height and symbol.
-* @param height The number of rows of the triangle (>= 2)
+* <BR>
+* @param height The number of rows of the triangle (>= 1)
 * @param symbol The symbols used to print the line, must be a printable ASCII character [33 - 126].
 */
 void triangle(const int height, const char symbol) {
@@ -252,24 +271,14 @@ void triangle(const int height, const char symbol) {
 */
 void drawShapes() {
     
-    srand(time(NULL));
-    
     // creates the correct amount of shapes
     for (int i = 0; i < MAX_SHAPES; i++) {
         
         int shape = 1 + rand() % 5;
         int length, height;
         
-        // if the shape is not a line, the length and height should be greater than the minimum (2)
-        if (shape > 2) {
-            length = MIN_SHAPE_LENGTH + rand() % MAX_SHAPE_LENGTH;
-            height = MIN_SHAPE_HEIGHT + rand() % MAX_SHAPE_HEIGHT;
-        }
-        // if the shape is a line, length and height can be as low as 1
-        else {
-            length = 1 + rand() % MAX_SHAPE_LENGTH;
-            height = 1 + rand() % MAX_SHAPE_HEIGHT;
-        }
+        length = MIN_SHAPE_LENGTH + rand() % MAX_SHAPE_LENGTH_RANGE;
+        height = MIN_SHAPE_LENGTH + rand() % MAX_SHAPE_HEIGHT_RANGE;
         
         // creates a random printable character
         char symbol = 33 + rand() % (126-33+1);
@@ -296,5 +305,57 @@ void drawShapes() {
             assert(false); // should not be possible
         }
         
+    }
+}
+
+/**
+* Function <code>initializeArrays</code> randomly generates the characteristics of shapes and stores them in arrays which are passed in.
+* <BR>
+* @param shapeTy The type of shape, values in array range from 1 - 5
+* @param shapeLen The length of the shape, values in array range from 1 - 20
+* @param shapeCh The symbols used to print the line, values in array range from 33 - 126 (printable characters).
+* @param size The size of the arrays [>= 1]
+*/
+void initializeArrays(int shapeTy[], int shapeLen[], char shapeCh[], const int size) {
+    assert(size > 0);
+    
+    for (int i = 0; i < size; i++) {
+        shapeTy[i] = 1 + rand() % 5;
+        shapeLen[i] = MIN_SHAPE_LENGTH + rand() % MAX_SHAPE_LENGTH_RANGE;
+        shapeCh[i] = 33 + rand() % 94;
+    }
+}
+
+/**
+* Function <code>drawShapes</code> prints an assortment of a random number of shapes with random lengths, heights, and symbols from the arrays initialized previously.
+* @param shapeTy The type of shape, values in array range from 1 - 5
+* @param shapeLen The length of the shape, values in array range from 1 - 20
+* @param shapeCh The symbols used to print the line, values in array range from 33 - 126 (printable characters).
+* @param size The size of the arrays [>= 1]
+*/
+void drawShapesWithArrays(const int shapeTy[], const int shapeLen[], const char shapeCh[], const int size) {
+    
+    for (int i = 0; i < size; i++) {
+        if (shapeTy[i] == 1) {
+            horizontalLine(shapeLen[i], shapeCh[i]);
+            cout << endl;
+        }
+        else if (shapeTy[i] == 2) {
+            verticalLine(shapeLen[i], shapeCh[i]);
+        }
+        else if (shapeTy[i] == 3) {
+            square(shapeLen[i], shapeCh[i]);
+            cout << endl;
+        }
+        else if (shapeTy[i] == 4) {
+            rectangle(shapeLen[i], (MIN_SHAPE_LENGTH + rand() % MAX_SHAPE_LENGTH_RANGE), shapeCh[i]);
+        }
+        else if (shapeTy[i] == 5) {
+            triangle(shapeLen[i], shapeCh[i]);
+        }
+        else {
+            assert(false); // should not be possible
+        }
+            
     }
 }
