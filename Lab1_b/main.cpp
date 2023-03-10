@@ -327,7 +327,7 @@ void initializeArrays(int shapeTy[], int shapeLen[], char shapeCh[], const int s
 }
 
 /**
-* Function <code>drawShapes</code> prints an assortment of a random number of shapes with random lengths, heights, and symbols from the arrays initialized previously.
+* Function <code>drawShapes</code> prints an assortment of shapes with random lengths, heights, and symbols from the arrays initialized previously.
 * @param shapeTy The type of shape, values in array range from 1 - 5
 * @param shapeLen The length of the shape, values in array range from 1 - 20
 * @param shapeCh The symbols used to print the line, values in array range from 33 - 126 (printable characters).
