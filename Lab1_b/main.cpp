@@ -278,7 +278,7 @@ void drawShapes() {
         int length, height;
         
         length = MIN_SHAPE_LENGTH + rand() % MAX_SHAPE_LENGTH_RANGE;
-        height = MIN_SHAPE_LENGTH + rand() % MAX_SHAPE_HEIGHT_RANGE;
+        height = MIN_SHAPE_HEIGHT + rand() % MAX_SHAPE_HEIGHT_RANGE;
         
         // creates a random printable character
         char symbol = 33 + rand() % (126-33+1);
